@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#5E8E5A</color>
+    <color name="colorPrimaryDark">#349F2B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="app_backgroud_color">#BFF5BB</color>
+    <color name="color_blue">#2448E4</color>
+    <color name="edit_text_fields_text">#7D9879</color>
+    <color name="white_color">#FFFFFF</color>
+
+    <color name="light_green">#8BC34A</color>
+    <color name="lime">#CDDC39</color>
+    <color name="blue">#2196F3</color>
+    <color name="cyan">#00BCD4</color>
+    <color name="red">#F44336</color>
+    <color name="deep_purple">#673AB7</color>
+    <color name="black">#000000</color>
+    <color name="dark_blue">#0d47a1</color>
+    <color name="purple">#4527a0</color>
+    <color name="light_gray">#a1887f</color>
+
+</resources>
