@@ -70,11 +70,14 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             getUsers = myDB.checkRepeatUser(username);
             if (getUsers != null && getUsers.getCount()>0) {
-                Toast.makeText(SignUpActivity.this, "Username Already Exist!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignUpActivity.this, "Username Already Taken!", Toast.LENGTH_SHORT).show();
             } else {
                 Boolean result = myDB.insertUser(firstname, lastname, username, email, password);
                 if (result) {
                     Toast.makeText(SignUpActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+
+                    startActivity(new Intent(SignUpActivity.this,MainActivity.class));
+
                     et_firstname.setText("");
                     et_lastname.setText("");
                     et_username.setText("");

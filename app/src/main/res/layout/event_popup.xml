@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_backgroud_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_event_popup_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:src="@drawable/close_icon"
+                android:textAlignment="center" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/new_event_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@color/colorPrimary"
+            android:text="Event Details"
+            android:textAlignment="center"
+            android:textColor="@color/white_color"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_event_title_static"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:ems="10"
+            android:text="Event Title:"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_event_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text="Event Title"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_event_date_static"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text="Event Date:"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_event_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Event Date"
+            android:textSize="16sp" />
+
+
+        <!--<Button-->
+        <!--android:id="@+id/btn_event_popup"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Close"-->
+        <!--android:background="@color/colorPrimary"-->
+        <!--android:textColor="@color/white_color"-->
+        <!--android:textSize="20sp"/>-->
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
