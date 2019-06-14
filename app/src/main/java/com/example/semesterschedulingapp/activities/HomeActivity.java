@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -28,6 +28,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.semesterschedulingapp.Pattern.MySingleton;
 import com.example.semesterschedulingapp.R;
 import com.example.semesterschedulingapp.Utils.Config;
+import com.example.semesterschedulingapp.Utils.SharedPrefManager;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
@@ -39,8 +40,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -55,12 +58,19 @@ public class HomeActivity extends AppCompatActivity {
     public int color = Color.GREEN;
     public Dialog mDailog;
 
-    List<Event> eventList;
+    private String ACCESS_TOKEN = "";
 
+
+    List<Event> eventList;
+    Button btn_signUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        //if the user is not logged in
+        //starting the login activity
+        isUserLoggedIn();
 
         calendarView = findViewById(R.id.compactcalendar_view);
         calendarView.setFirstDayOfWeek(Calendar.MONDAY);
@@ -72,6 +82,16 @@ public class HomeActivity extends AppCompatActivity {
         tv_monthName = findViewById(R.id.tv_month_name);
         btn_nextMonth = findViewById(R.id.btn_next);
         btn_prevMonth = findViewById(R.id.btn_previous);
+        btn_signUp = findViewById(R.id.btn_signup);
+
+        btn_signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(HomeActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //set initial title of month to textview.
         tv_monthName.setText(dateFormatForMonth.format(calendarView.getFirstDayOfCurrentMonth()));
@@ -112,9 +132,18 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    private void isUserLoggedIn(){
+
+        if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
+
     private void loadEventsFromApi() {
 
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, Config.BASE_URL, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, Config.BASE_URL, null,
+                new Response.Listener<JSONArray>() {
 
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -167,7 +196,26 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }).create().show();
             }
-        });
+        }){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("token", ACCESS_TOKEN);
+                return params;
+            }
+
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("User", UserName);
+//                params.put("Pass", PassWord);
+//                return params;
+//            }
+        };
 
         request.setRetryPolicy(new DefaultRetryPolicy(15000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
