@@ -5,11 +5,14 @@ public class Users {
     private String userEmail;
     private String userPassword;
     private String userToken;
+    private String tokenType;
 
-    public Users(String userEmail, String userPassword, String userToken) {
+
+    public Users(String userEmail, String userPassword, String userToken, String tokenType) {
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userToken = userToken;
+        this.tokenType = tokenType;
     }
 
     public String getUserEmail() {
@@ -22,5 +25,9 @@ public class Users {
 
     public String getUserToken() {
         return userToken;
+    }
+
+    public String getTokenType() {
+        return tokenType;
     }
 }

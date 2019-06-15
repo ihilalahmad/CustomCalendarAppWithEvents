@@ -25,10 +25,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.semesterschedulingapp.Pattern.MySingleton;
 import com.example.semesterschedulingapp.R;
 import com.example.semesterschedulingapp.Utils.Config;
 import com.example.semesterschedulingapp.Utils.SharedPrefManager;
+import com.example.semesterschedulingapp.model.Users;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
@@ -71,6 +73,7 @@ public class HomeActivity extends AppCompatActivity {
         //if the user is not logged in
         //starting the login activity
         isUserLoggedIn();
+
 
         calendarView = findViewById(R.id.compactcalendar_view);
         calendarView.setFirstDayOfWeek(Calendar.MONDAY);
@@ -142,26 +145,27 @@ public class HomeActivity extends AppCompatActivity {
 
     private void loadEventsFromApi() {
 
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, Config.BASE_URL, null,
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, Config.TASK_URL,null,
                 new Response.Listener<JSONArray>() {
 
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onResponse(JSONArray response) {
 
+                Log.i("SSAResponse", String.valueOf(response));
+
                 for (int i = 0; i < response.length(); i++) {
 
                     try {
 
-                        JSONObject catObj = response.getJSONObject(i);
+                        JSONObject taskObj = response.getJSONObject(i);
 
-                        long date = catObj.getLong("event_date");
-                        String title = catObj.getString("event_title");
-                        String ecolor = catObj.getString("event_color");
+                        String task_title = taskObj.getString("task_title");
+                        long task_date = taskObj.getLong("task_date");
 
-                        Log.d("SSA Events", "Date Millis: " + date + ", Title: " + title);
+                        Log.d("SSAEvents", "Task Title: " + task_title);
 
-                        Event events = new Event(color,date,title);
+                        Event events = new Event(color,task_date,task_title);
                         eventList.add(events);
                         calendarView.addEvent(events);
 
@@ -175,46 +179,27 @@ public class HomeActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("VolleyErr", "Error: " + error.getMessage());
-                Log.d("VolleyErr", "----- Volley Error -----" + error.toString());
 
+                Log.e("ResponseErr", error.getMessage());
 
-                new AlertDialog.Builder(HomeActivity.this)
-                        .setTitle("No Network Connection")
-                        .setCancelable(false)
-                        .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                loadEventsFromApi();
-
-                            }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                }).create().show();
             }
         }){
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
 
+                Users user = SharedPrefManager.getInstance(getApplicationContext()).getUser();
+                String token_type = user.getTokenType();
+                String access_token = user.getUserToken();
+
+                Log.i("TokenFromModel",token_type+" "+access_token);
+
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Content-Type", "application/json; charset=UTF-8");
-                params.put("token", ACCESS_TOKEN);
+                params.put("Authorization",token_type+" "+access_token);
                 return params;
             }
 
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("User", UserName);
-//                params.put("Pass", PassWord);
-//                return params;
-//            }
         };
 
         request.setRetryPolicy(new DefaultRetryPolicy(15000,

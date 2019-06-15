@@ -97,7 +97,8 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.Login_Url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.LOGIN_URL,
+                new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -106,11 +107,14 @@ public class LoginActivity extends AppCompatActivity {
                 try{
 
                     JSONObject jsonObject = new JSONObject(response);
+
                     int success_message = jsonObject.getInt("success");
 
                     if (success_message == 1) {
+
                         String access_token = jsonObject.getString("access_token");
-                        Users users = new Users(st_login_email, st_login_password, access_token);
+                        String token_type = jsonObject.getString("token_type");
+                        Users users = new Users(st_login_email, st_login_password,access_token, token_type);
                         SharedPrefManager.getInstance(getApplicationContext()).userLogin(users);
 
                         Log.i("SSAToken", success_message + " " + access_token);

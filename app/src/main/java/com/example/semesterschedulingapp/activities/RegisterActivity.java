@@ -5,8 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,13 +17,21 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.semesterschedulingapp.Pattern.MySingleton;
 import com.example.semesterschedulingapp.R;
 import com.example.semesterschedulingapp.Utils.Config;
 import com.example.semesterschedulingapp.helpers.DatabaseHelper;
+import com.example.semesterschedulingapp.model.Programs;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -28,6 +39,13 @@ public class RegisterActivity extends AppCompatActivity {
     String st_firstName, st_lastName, st_userName, st_email, st_phone, st_password, st_con_password, st_batch_id;
     Button btn_signup;
     TextView tv_login_acc;
+    Spinner programs_spinner;
+    Spinner batches_spinner;
+
+    List<Programs> programsList = new ArrayList<>();
+    List<String> programsName = new ArrayList<>();
+    String programID;
+
 
     DatabaseHelper myDB;
 
@@ -45,7 +63,11 @@ public class RegisterActivity extends AppCompatActivity {
         et_phone = findViewById(R.id.et_signup_phone);
         et_password = findViewById(R.id.et_signup_password);
         et_con_password = findViewById(R.id.et_signup_con_password);
-        et_batch_id = findViewById(R.id.et_signup_batch_id);
+//        et_batch_id = findViewById(R.id.et_signup_batch_id);
+
+        programs_spinner = findViewById(R.id.et_signup_programs);
+        batches_spinner = findViewById(R.id.et_signup_batch);
+
 
         btn_signup = findViewById(R.id.btn_signup_user);
         tv_login_acc = findViewById(R.id.tv_login_acc);
@@ -58,7 +80,6 @@ public class RegisterActivity extends AppCompatActivity {
                 registerStudent();
             }
         });
-
         //login onClick
         tv_login_acc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,46 +87,27 @@ public class RegisterActivity extends AppCompatActivity {
                 loginAccount();
             }
         });
+
+        getPrograms();
+        programs_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                getBatches();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
+
 
     private void loginAccount() {
         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
     }
 
-//    private void registerUser() {
-//        String firstname = et_firstname.getText().toString();
-//        String lastname = et_lastname.getText().toString();
-//        String username = et_username.getText().toString();
-//        String email = et_email.getText().toString();
-//        String password = et_password.getText().toString();
-//
-//        Cursor getUsers;
-//        if (firstname.isEmpty() || lastname.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-//            Toast.makeText(RegisterActivity.this, "Complete All Field", Toast.LENGTH_SHORT).show();
-//        } else {
-//            getUsers = myDB.checkRepeatUser(username);
-//            if (getUsers != null && getUsers.getCount()>0) {
-//                Toast.makeText(RegisterActivity.this, "Username Already Taken!", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Boolean result = myDB.insertUser(firstname, lastname, username, email, password);
-//                if (result) {
-//                    Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-//
-//                    startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
-//
-//                    et_firstname.setText("");
-//                    et_lastname.setText("");
-//                    et_username.setText("");
-//                    et_email.setText("");
-//                    et_password.setText("");
-//                } else {
-//                    Toast.makeText(RegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }
-//    }
-
-    private void registerStudent(){
+    private void registerStudent() {
 
         st_firstName = et_firstname.getText().toString();
         st_lastName = et_lastname.getText().toString();
@@ -114,9 +116,9 @@ public class RegisterActivity extends AppCompatActivity {
         st_phone = et_phone.getText().toString();
         st_password = et_password.getText().toString();
         st_con_password = et_con_password.getText().toString();
-        st_batch_id = et_batch_id.getText().toString();
+//        st_batch_id = et_batch_id.getText().toString();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.SignUp_Url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.SIGNUP_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -131,23 +133,43 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(RegisterActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("SSA SignUp ERR", error.getMessage());
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("first_name",st_firstName);
-                params.put("last_name",st_lastName);
-                params.put("username",st_email);
-                params.put("email",st_email);
-                params.put("phone",st_phone);
-                params.put("password",st_password);
-                params.put("password_confirmation",st_con_password);
-                params.put("batch_id",st_batch_id);
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("first_name", st_firstName);
+                params.put("last_name", st_lastName);
+                params.put("username", st_email);
+                params.put("email", st_email);
+                params.put("phone", st_phone);
+                params.put("password", st_password);
+                params.put("password_confirmation", st_con_password);
+                params.put("batch_id", st_batch_id);
 
                 return params;
             }
         };
         MySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
+
+    private void getPrograms() {
+
+        JsonArrayRequest programRequest = new JsonArrayRequest(Request.Method.GET, Config.PROGRAMS_URL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+
+                Log.i("SSAResponse", String.valueOf(response));
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        MySingleton.getInstance(this).addToRequestQueue(programRequest);
+
+    }
 }
+

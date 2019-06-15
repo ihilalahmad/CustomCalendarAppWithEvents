@@ -17,6 +17,8 @@ public class SharedPrefManager {
     private static final String KEY_USERNAME = "keyusername";
     private static final String KEY_EMAIL = "keyemail";
     private static final String KEY_TOKEN = "keytoken";
+    private static final String KEY_TOKEN_TYPE = "keytokentype";
+
     private static SharedPrefManager mInstance;
     private static Context mCtx;
 
@@ -39,6 +41,7 @@ public class SharedPrefManager {
         editor.putString(KEY_USERNAME, user.getUserEmail());
         editor.putString(KEY_EMAIL, user.getUserPassword());
         editor.putString(KEY_TOKEN, user.getUserToken());
+        editor.putString(KEY_TOKEN_TYPE, user.getTokenType());
         editor.apply();
     }
 
@@ -54,7 +57,8 @@ public class SharedPrefManager {
         return new Users(
                 sharedPreferences.getString(KEY_USERNAME, null),
                 sharedPreferences.getString(KEY_EMAIL, null),
-                sharedPreferences.getString(KEY_TOKEN, null)
+                sharedPreferences.getString(KEY_TOKEN, null),
+                sharedPreferences.getString(KEY_TOKEN_TYPE, null)
         );
     }
 

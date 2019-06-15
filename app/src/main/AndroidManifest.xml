@@ -34,12 +34,12 @@
             android:name=".activities.HomeActivity"
             android:label="Home"
             android:parentActivityName=".activities.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".activities.RegisterActivity"
@@ -50,12 +50,12 @@
             android:name=".activities.LoginActivity"
             android:theme="@style/myThemeNoActionbar"
             android:windowSoftInputMode="adjustPan">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<action android:name="android.intent.action.VIEW" />-->
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.VIEW" />
 
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
