@@ -4,31 +4,16 @@
 
 
     <item
-        android:id="@+id/action_search"
-        android:title="Search"
-        app:showAsAction="collapseActionView|ifRoom"
-        android:icon="@drawable/ic_search"
-        />
-
-
-    <item
-        android:id="@+id/action_calender"
+        android:id="@+id/action_tasks"
         android:title="Download News"
         app:showAsAction="collapseActionView|ifRoom"
-        android:icon="@drawable/ic_calender"
+        android:icon="@drawable/task_icon"
         />
 
     <item
-        android:id="@+id/action_settings"
-        android:title="Settings"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_settings"
-        />
-
-
-
-
-
-
+        android:id="@+id/action_logout"
+        app:showAsAction="collapseActionView|ifRoom"
+        android:icon="@drawable/logout_icon"
+        android:title="logout" />
 
 </menu>

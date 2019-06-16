@@ -25,7 +25,7 @@
         android:id="@+id/back"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.7"
+        android:layout_weight="0.8"
         android:fontFamily="@font/gotham"
         android:gravity="center"
         android:shadowColor="#57000000"
@@ -35,11 +35,16 @@
         android:textSize="28sp"
         android:textStyle="bold" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.2"
+        android:layout_weight="1.4"
         android:orientation="horizontal"
         android:weightSum="5">
 
@@ -88,12 +93,12 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1" />
+        android:layout_weight="0.2" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1.2"
         android:textColorHint="#000000">
 
         <EditText
@@ -111,12 +116,12 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1" />
+        android:layout_weight="0.2" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1.2"
         android:textColorHint="#000000">
 
         <EditText
@@ -134,12 +139,12 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1" />
+        android:layout_weight="0.2" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1.2"
         android:textColorHint="#000000">
 
         <EditText
@@ -157,70 +162,26 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1" />
+        android:layout_weight="0.2" />
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="0.5"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:weightSum="5">-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Program"
+        android:textColor="#000000"
+        android:textSize="18sp" />
 
-        <!--<TextView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="2.5"-->
-            <!--android:text="Select Program"-->
-            <!--android:textSize="20sp"-->
-            <!--android:textColor="#000000"-->
-            <!--/>-->
+    <Spinner
+        android:id="@+id/et_signup_programs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
-        <!--<TextView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="2.5"-->
-            <!--android:text="Select Batch"-->
-            <!--android:textSize="20sp"-->
-            <!--android:textColor="#000000"-->
-            <!--/>-->
-
-
-    <!--</LinearLayout>-->
+        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:orientation="horizontal"
-        android:weightSum="5">
-
-            <Spinner
-                android:id="@+id/et_signup_programs"
-                android:layout_width="0dp"
-                android:layout_weight="2.5"
-                android:layout_height="match_parent"
-                android:textSize="18sp" />
-
-            <Spinner
-                android:id="@+id/et_signup_batch"
-                android:layout_width="0dp"
-                android:layout_weight="2.5"
-                android:layout_height="match_parent"
-                android:textSize="18sp" />
-
-
-    </LinearLayout>
-
-
-    <!--<FrameLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="0.1" />-->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.2"
+        android:layout_weight="1.4"
         android:orientation="horizontal"
         android:weightSum="5">
 
@@ -269,7 +230,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1" />
+        android:layout_weight="0.2" />
 
     <Button
         android:id="@+id/btn_signup_user"
@@ -287,7 +248,19 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1" />
+        android:layout_weight="0.2" />
+
+    <ProgressBar
+        android:id="@+id/signup_progressbar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2" />
 
     <LinearLayout
         android:layout_width="match_parent"

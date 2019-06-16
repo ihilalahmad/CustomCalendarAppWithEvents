@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,6 @@ import com.example.semesterschedulingapp.Pattern.MySingleton;
 import com.example.semesterschedulingapp.R;
 import com.example.semesterschedulingapp.Utils.Config;
 import com.example.semesterschedulingapp.Utils.SharedPrefManager;
-import com.example.semesterschedulingapp.helpers.DatabaseHelper;
 import com.example.semesterschedulingapp.model.Users;
 
 import org.json.JSONException;
@@ -35,29 +35,28 @@ public class LoginActivity extends AppCompatActivity {
     String st_login_email, st_login_password;
     Button login_btn;
     TextView tv_create_acc;
-
-    String username,password;
-    DatabaseHelper myDB;
-    public String ACCESS_TOKEN;
+    ProgressBar login_progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        myDB = new DatabaseHelper(this);
+        setContentView(R.layout.activity_login);
 
         et_email = findViewById(R.id.et_login_email);
         et_password = findViewById(R.id.et_login_password);
 
         login_btn = findViewById(R.id.btn_login_user);
         tv_create_acc = findViewById(R.id.tv_create_acc);
+        login_progressBar = findViewById(R.id.login_progress);
 
+        login_progressBar.setVisibility(View.INVISIBLE);
         //login onClick
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                loginUser();
+                login_progressBar.setVisibility(View.VISIBLE);
+
                 loginStudent();
             }
         });
@@ -119,11 +118,13 @@ public class LoginActivity extends AppCompatActivity {
 
                         Log.i("SSAToken", success_message + " " + access_token);
 
+                        login_progressBar.setVisibility(View.GONE);
                         finish();
                         startActivity(new Intent(LoginActivity.this,HomeActivity.class));
 
                     }else if (success_message == 0){
 
+                        login_progressBar.setVisibility(View.GONE);
                         String loginErrMsg = jsonObject.getString("message");
                         Toast.makeText(LoginActivity.this,loginErrMsg,Toast.LENGTH_SHORT).show();
                     }

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "19733965277",
+    "firebase_url": "https://semesterschedulingapp.firebaseio.com",
+    "project_id": "semesterschedulingapp",
+    "storage_bucket": "semesterschedulingapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:19733965277:android:979d05503e4af4b4",
+        "android_client_info": {
+          "package_name": "com.example.semesterschedulingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "19733965277-dn01lk3tn2hm8lsa9mf6t3tgc6r6jut3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.semesterschedulingapp",
+            "certificate_hash": "f3d91cb2ab384372d469103f57803520130f3678"
+          }
+        },
+        {
+          "client_id": "19733965277-oeo2k3jjeojvu6a8g51hpr9p2otb96gs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwPobWhbGRiMg7v5Dx4uZJlLo05XqVzMs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "19733965277-oeo2k3jjeojvu6a8g51hpr9p2otb96gs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

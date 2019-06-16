@@ -15,7 +15,6 @@ import com.example.semesterschedulingapp.helpers.DatabaseHelper;
 
 public class CalenderActivity extends AppCompatActivity {
     CalendarView simpleCalendarView;
-    DatabaseHelper myDB;
     private Dialog myDialog;
 
     @Override
@@ -24,7 +23,6 @@ public class CalenderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calender);
 
         myDialog = new Dialog(this);
-        myDB = new DatabaseHelper(this);
 
         simpleCalendarView = findViewById(R.id.simpleCalendarView);
         simpleCalendarView.setFocusedMonthDateColor(Color.RED);
@@ -76,7 +74,6 @@ public class CalenderActivity extends AppCompatActivity {
                 final String event_date = date.getText().toString();
                 final String event_description = description.getText().toString();
 
-                addEvent(event_title,event_date,event_description);
                 myDialog.dismiss();
             }
         });
@@ -85,18 +82,4 @@ public class CalenderActivity extends AppCompatActivity {
         myDialog.show();
     }
 
-    private void addEvent(String title, String date, String description){
-
-       Boolean insert = myDB.insertEvent(title,date,description);
-
-       if (insert){
-
-           Toast.makeText(getApplicationContext(), "Event Added.", Toast.LENGTH_LONG).show();
-       } else {
-
-           Toast.makeText(getApplicationContext(), "Error Adding Event.", Toast.LENGTH_LONG).show();
-
-       }
-
-    }
 }

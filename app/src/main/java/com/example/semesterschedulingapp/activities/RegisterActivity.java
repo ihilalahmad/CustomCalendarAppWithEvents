@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.example.semesterschedulingapp.R;
 import com.example.semesterschedulingapp.Utils.Config;
 import com.example.semesterschedulingapp.helpers.DatabaseHelper;
 import com.example.semesterschedulingapp.model.Programs;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,21 +42,18 @@ public class RegisterActivity extends AppCompatActivity {
     Button btn_signup;
     TextView tv_login_acc;
     Spinner programs_spinner;
-    Spinner batches_spinner;
+    ProgressBar signup_progressbar;
 
-    List<Programs> programsList = new ArrayList<>();
+    List<Programs> programsList;
     List<String> programsName = new ArrayList<>();
-    String programID;
+    int selected_program;
 
-
-    DatabaseHelper myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        myDB = new DatabaseHelper(this);
 
         et_firstname = findViewById(R.id.et_signup_firstname);
         et_lastname = findViewById(R.id.et_signup_lastname);
@@ -63,20 +62,22 @@ public class RegisterActivity extends AppCompatActivity {
         et_phone = findViewById(R.id.et_signup_phone);
         et_password = findViewById(R.id.et_signup_password);
         et_con_password = findViewById(R.id.et_signup_con_password);
-//        et_batch_id = findViewById(R.id.et_signup_batch_id);
+
+        signup_progressbar = findViewById(R.id.signup_progressbar);
 
         programs_spinner = findViewById(R.id.et_signup_programs);
-        batches_spinner = findViewById(R.id.et_signup_batch);
 
 
         btn_signup = findViewById(R.id.btn_signup_user);
         tv_login_acc = findViewById(R.id.tv_login_acc);
 
+        signup_progressbar.setVisibility(View.GONE);
         //signup onClick
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                registerUser();
+                signup_progressbar.setVisibility(View.VISIBLE);
                 registerStudent();
             }
         });
@@ -92,7 +93,9 @@ public class RegisterActivity extends AppCompatActivity {
         programs_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                getBatches();
+                selected_program = programsList.get(position).getProgram_id();
+
+                FirebaseMessaging.getInstance().subscribeToTopic(String.valueOf(selected_program));
             }
 
             @Override
@@ -121,11 +124,30 @@ public class RegisterActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.SIGNUP_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
-                Toast.makeText(RegisterActivity.this, response, Toast.LENGTH_SHORT).show();
                 Log.i("SAARegResponse", response);
 
-                loginAccount();
+                try{
+
+                    JSONObject registrationResponse = new JSONObject(response);
+
+                    if (registrationResponse.optString("success").equals("1")){
+                        signup_progressbar.setVisibility(View.GONE);
+
+                        String success_messge = registrationResponse.getString("message");
+                        Toast.makeText(RegisterActivity.this, success_messge, Toast.LENGTH_SHORT).show();
+                        Log.i("SSARegRes",success_messge);
+                        loginAccount();
+
+                    }else if (registrationResponse.optString("success").equals("0")){
+                        signup_progressbar.setVisibility(View.GONE);
+                        String error_messge = registrationResponse.getString("message");
+                        Toast.makeText(RegisterActivity.this, error_messge, Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -145,7 +167,7 @@ public class RegisterActivity extends AppCompatActivity {
                 params.put("phone", st_phone);
                 params.put("password", st_password);
                 params.put("password_confirmation", st_con_password);
-                params.put("batch_id", st_batch_id);
+                params.put("batch_id", String.valueOf(selected_program));
 
                 return params;
             }
@@ -155,19 +177,53 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void getPrograms() {
 
-        JsonArrayRequest programRequest = new JsonArrayRequest(Request.Method.GET, Config.PROGRAMS_URL, null, new Response.Listener<JSONArray>() {
+        StringRequest programRequest = new StringRequest(Request.Method.GET, Config.PROGRAMS_URL, new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONArray response) {
+            public void onResponse(String response) {
 
-                Log.i("SSAResponse", String.valueOf(response));
+                try{
+
+                    JSONObject programObj = new JSONObject(response);
+                    programsList = new ArrayList<>();
+
+                    JSONArray programArray = programObj.getJSONArray("data");
+
+                    for (int i=0; i<programArray.length(); i++){
+
+                        JSONObject programsName = programArray.getJSONObject(i);
+
+                        int program_id = programsName.getInt("id");
+                        String program_name = programsName.getString("program_name");
+                        Log.i("SSAPrograms",program_id+ " " +program_name);
+
+                        Programs programs = new Programs(program_id,program_name);
+                        programsList.add(programs);
+                    }
+
+                    for (int j=0; j<programsList.size(); j++){
+
+                        programsName.add(programsList.get(j).getProgram_name());
+
+                        Log.i("SSAProgramNames", String.valueOf(programsName));
+                    }
+
+                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(RegisterActivity.this, android.R.layout.simple_spinner_dropdown_item, programsName);
+                    spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    programs_spinner.setAdapter(spinnerArrayAdapter);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.e("SSAProgramsErr", error.getMessage());
             }
         });
+
         MySingleton.getInstance(this).addToRequestQueue(programRequest);
 
     }

@@ -42,7 +42,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/calibri"
                 android:hint="Name"
-                android:text="dithis@gmail.com"
                 android:inputType="textEmailAddress"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -62,7 +61,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/calibri"
                 android:hint="Password"
-                android:text="12341234"
                 android:inputType="textPassword"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -83,6 +81,13 @@
             android:textColor="#ffffff"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/login_progress"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
 
         <LinearLayout
             android:layout_width="match_parent"

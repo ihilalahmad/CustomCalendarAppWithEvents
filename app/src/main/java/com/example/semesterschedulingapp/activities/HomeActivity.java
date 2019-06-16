@@ -33,6 +33,7 @@ import com.example.semesterschedulingapp.Utils.SharedPrefManager;
 import com.example.semesterschedulingapp.model.Users;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,15 +61,14 @@ public class HomeActivity extends AppCompatActivity {
     public int color = Color.GREEN;
     public Dialog mDailog;
 
-    private String ACCESS_TOKEN = "";
-
-
     List<Event> eventList;
-    Button btn_signUp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        FirebaseMessaging.getInstance().subscribeToTopic("All");
 
         //if the user is not logged in
         //starting the login activity
@@ -85,16 +85,6 @@ public class HomeActivity extends AppCompatActivity {
         tv_monthName = findViewById(R.id.tv_month_name);
         btn_nextMonth = findViewById(R.id.btn_next);
         btn_prevMonth = findViewById(R.id.btn_previous);
-        btn_signUp = findViewById(R.id.btn_signup);
-
-        btn_signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(HomeActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
 
         //set initial title of month to textview.
         tv_monthName.setText(dateFormatForMonth.format(calendarView.getFirstDayOfCurrentMonth()));
@@ -277,18 +267,18 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.action_calender) {
+        if (id == R.id.action_tasks) {
 
-            Intent intent = new Intent(HomeActivity.this, CalenderActivity.class);
+            Intent intent = new Intent(HomeActivity.this, NotificationActivity.class);
             startActivity(intent);
             return true;
         }
 
-        if (id == R.id.action_settings) {
-
-            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
-            startActivity(intent);
+        if (id == R.id.action_logout){
+            SharedPrefManager.getInstance(getApplicationContext()).logout();
         }
+
+
 
         return super.onOptionsItemSelected(item);
     }

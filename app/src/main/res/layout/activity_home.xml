@@ -81,12 +81,12 @@
         app:compactCalendarTextSize="12sp"
         />
 
-    <Button
-        android:id="@+id/btn_signup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SignUp"
-        android:layout_margin="10dp"/>
+    <!--<Button-->
+        <!--android:id="@+id/btn_signup"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Tasks"-->
+        <!--android:layout_margin="10dp"/>-->
 
 
 </LinearLayout>

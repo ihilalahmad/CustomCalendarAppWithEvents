@@ -12,6 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".activities.NotificationActivity"
+            android:label="Notifications">
+
+            <intent-filter>
+                <action android:name="TaskNotification" />
+
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".activities.SettingsActivity"
             android:label="Settings"
@@ -19,28 +30,25 @@
         <activity
             android:name=".activities.CalenderActivity"
             android:label="Calender"
-            android:parentActivityName=".activities.HomeActivity">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<action android:name="android.intent.action.VIEW" />-->
+            android:parentActivityName=".activities.HomeActivity"/>
 
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
         <activity
             android:name=".activities.SearchActivity"
             android:parentActivityName=".activities.HomeActivity" />
+
         <activity
             android:name=".activities.HomeActivity"
-            android:label="Home"
-            android:parentActivityName=".activities.LoginActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
+            android:label="Home">
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+             <action android:name="android.intent.action.VIEW" />
+
+
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.RegisterActivity"
             android:theme="@style/myThemeNoActionbar"
@@ -49,14 +57,13 @@
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/myThemeNoActionbar"
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <action android:name="android.intent.action.VIEW" />
+            android:windowSoftInputMode="adjustPan"/>
 
-            <category android:name="android.intent.category.LAUNCHER" />
+        <service android:name=".services.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </activity>
+        </service>
     </application>
 
 </manifest>
