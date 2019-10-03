@@ -6,13 +6,15 @@ public class Users {
     private String userPassword;
     private String userToken;
     private String tokenType;
+    private String userProgram_id;
 
 
-    public Users(String userEmail, String userPassword, String userToken, String tokenType) {
+    public Users(String userEmail, String userPassword, String userToken, String tokenType, String userProgram_id) {
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userToken = userToken;
         this.tokenType = tokenType;
+        this.userProgram_id = userProgram_id;
     }
 
     public String getUserEmail() {
@@ -29,5 +31,10 @@ public class Users {
 
     public String getTokenType() {
         return tokenType;
+    }
+
+    public String getUserProgram_id(){
+
+        return userProgram_id;
     }
 }

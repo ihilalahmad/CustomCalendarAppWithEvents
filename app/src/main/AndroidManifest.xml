@@ -11,17 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".activities.NotificationActivity"
+        <activity android:name=".activities.CoursesActivity"/>
+        <activity
+            android:name=".activities.NotificationActivity"
             android:label="Notifications">
-
             <intent-filter>
                 <action android:name="TaskNotification" />
 
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".activities.SettingsActivity"
@@ -30,8 +28,7 @@
         <activity
             android:name=".activities.CalenderActivity"
             android:label="Calender"
-            android:parentActivityName=".activities.HomeActivity"/>
-
+            android:parentActivityName=".activities.HomeActivity" />
         <activity
             android:name=".activities.SearchActivity"
             android:parentActivityName=".activities.HomeActivity" />
@@ -39,25 +36,22 @@
         <activity
             android:name=".activities.HomeActivity"
             android:label="Home">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
-             <action android:name="android.intent.action.VIEW" />
-
-
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
             android:name=".activities.RegisterActivity"
             android:theme="@style/myThemeNoActionbar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/myThemeNoActionbar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
 
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>

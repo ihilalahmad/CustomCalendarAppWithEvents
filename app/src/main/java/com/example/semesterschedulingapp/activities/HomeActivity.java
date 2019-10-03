@@ -30,6 +30,7 @@ import com.example.semesterschedulingapp.Pattern.MySingleton;
 import com.example.semesterschedulingapp.R;
 import com.example.semesterschedulingapp.Utils.Config;
 import com.example.semesterschedulingapp.Utils.SharedPrefManager;
+import com.example.semesterschedulingapp.model.Courses;
 import com.example.semesterschedulingapp.model.Users;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
@@ -57,11 +58,13 @@ public class HomeActivity extends AppCompatActivity {
     TextView tv_monthName;
     ImageButton btn_nextMonth;
     ImageButton btn_prevMonth;
+    Button btn_all_courses;
 
     public int color = Color.GREEN;
     public Dialog mDailog;
 
     List<Event> eventList;
+    List<Courses> coursesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +73,10 @@ public class HomeActivity extends AppCompatActivity {
 
         FirebaseMessaging.getInstance().subscribeToTopic("All");
 
+
         //if the user is not logged in
         //starting the login activity
-        isUserLoggedIn();
+//        isUserLoggedIn();
 
 
         calendarView = findViewById(R.id.compactcalendar_view);
@@ -85,11 +89,12 @@ public class HomeActivity extends AppCompatActivity {
         tv_monthName = findViewById(R.id.tv_month_name);
         btn_nextMonth = findViewById(R.id.btn_next);
         btn_prevMonth = findViewById(R.id.btn_previous);
+        btn_all_courses = findViewById(R.id.btn_all_courses);
 
         //set initial title of month to textview.
         tv_monthName.setText(dateFormatForMonth.format(calendarView.getFirstDayOfCurrentMonth()));
 
-        loadEventsFromApi();
+//        loadEventsFromApi();
 
 
         // define a listener to receive callbacks when certain events happen.
@@ -123,6 +128,78 @@ public class HomeActivity extends AppCompatActivity {
                 calendarView.scrollLeft();
             }
         });
+
+        btn_all_courses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(HomeActivity.this, CoursesActivity.class));
+            }
+        });
+
+    }
+
+    private void getAllCourses(){
+
+        StringRequest coursesRequest = new StringRequest(Request.Method.POST, Config.COURSES_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+//                Log.i("CoursesRes", response);
+
+                try {
+
+                    JSONObject allCourses = new JSONObject(response);
+                    coursesList = new ArrayList<>();
+
+                    JSONArray coursesArray = allCourses.getJSONArray("data");
+                    Log.i("CoursesRes", String.valueOf(coursesArray));
+
+
+                    for (int i=0; i<coursesArray.length(); i++){
+
+                        JSONObject coursesObj = coursesArray.getJSONObject(i);
+
+                        String course_id = coursesObj.getString("id");
+                        String course_name = coursesObj.getString("course_name");
+                        String course_teacher = coursesObj.getString("teacher_name");
+                        String course_session = coursesObj.getString("session_name");
+
+                        Courses courses = new Courses(course_id,course_name,course_teacher,course_session);
+
+                        coursesList.add(courses);
+
+                        Log.i("coursesList",course_name);
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e("coursesErr", error.getMessage());
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Users user = SharedPrefManager.getInstance(getApplicationContext()).getUser();
+                String program_id = user.getUserProgram_id();
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("program_id", program_id);
+                return params;
+            }
+        };
+
+        MySingleton.getInstance(this).addToRequestQueue(coursesRequest);
     }
 
     private void isUserLoggedIn(){
@@ -282,4 +359,5 @@ public class HomeActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

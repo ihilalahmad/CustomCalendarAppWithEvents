@@ -56,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                loginUser();
                 login_progressBar.setVisibility(View.VISIBLE);
-
                 loginStudent();
             }
         });
@@ -113,7 +112,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         String access_token = jsonObject.getString("access_token");
                         String token_type = jsonObject.getString("token_type");
-                        Users users = new Users(st_login_email, st_login_password,access_token, token_type);
+                        String program_id = jsonObject.getString("program_id");
+                        Users users = new Users(st_login_email, st_login_password,access_token, token_type,program_id);
                         SharedPrefManager.getInstance(getApplicationContext()).userLogin(users);
 
                         Log.i("SSAToken", success_message + " " + access_token);
