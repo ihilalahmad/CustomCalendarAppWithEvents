@@ -76,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //if the user is not logged in
         //starting the login activity
-//        isUserLoggedIn();
+        isUserLoggedIn();
 
 
         calendarView = findViewById(R.id.compactcalendar_view);
@@ -94,7 +94,7 @@ public class HomeActivity extends AppCompatActivity {
         //set initial title of month to textview.
         tv_monthName.setText(dateFormatForMonth.format(calendarView.getFirstDayOfCurrentMonth()));
 
-//        loadEventsFromApi();
+        loadEventsFromApi();
 
 
         // define a listener to receive callbacks when certain events happen.
